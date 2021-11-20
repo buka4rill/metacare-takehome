@@ -8,6 +8,7 @@ dotenv.config();
 
 import { moviesRouter } from "./routes/movies";
 import { commentsRouter } from "./routes/comments";
+import { charactersRouter } from "./routes/characters";
 
 // server setup
 const main = async () => {
@@ -31,6 +32,7 @@ const main = async () => {
   // Inject route
   app.use(moviesRouter);
   app.use(commentsRouter);
+  app.use(charactersRouter);
 
   // Declare ports & listen to port
   const port = SERVER.PORT || 4000;

@@ -4,10 +4,7 @@ import mikroConfig from "../mikro-orm.config";
 import { validationResult } from "express-validator";
 import { Comments } from "../entities/Comments";
 import axios from "axios";
-import { IData } from "../interfaces/AxiosResultData";
-// import { moviesRouter } from "src/routes/movies";
-
-let comments_count = 0;
+import { IFilm } from "../interfaces/AxiosResultData";
 
 export const createComment = async (req: Request, res: Response) => {
   const { movieId } = req.params;
@@ -29,35 +26,24 @@ export const createComment = async (req: Request, res: Response) => {
 
   try {
     const orm = await MikroORM.init(mikroConfig);
-    const movie = await axios.get<IData>(
+    const movie = await axios.get<IFilm>(
       `https://swapi.dev/api/films/${movieId}`
     );
-    const comments = await orm.em.find(Comments, {});
+    // const comments = await orm.em.find(Comments, {});
 
-    const filteredComments = comments.filter(
-      (comment) => Number(comment.movieEpisodeId) == movie.data.episode_id
-    );
+    // const filteredComments = comments.filter(
+    //   (comment) => Number(comment.movieEpisodeId) == movie.data.episode_id
+    // );
 
-    let commentCount = 0;
-    filteredComments.forEach(() => commentCount++);
-
-    console.log(
-      "comment: ",
-      comment,
-      "movieId: ",
-      movieId,
-      "movieEpisodeId",
-      movie.data.episode_id,
-      "commentCount: ",
-      commentCount
-    );
+    // let commentCount = 0;
+    // comments.forEach(() => commentCount++);
 
     // Create comment
     const newComment = orm.em.create(Comments, {
       comment,
       movieId,
       movieEpisodeId: movie.data.episode_id,
-      commentCount: commentCount + 1,
+      commenterIpAddress: req.socket.remoteAddress,
     });
 
     // Save to db
@@ -82,16 +68,16 @@ export const getAllComments = async (_: any, res: Response) => {
   try {
     const orm = await MikroORM.init(mikroConfig);
     const comments = await orm.em.find(Comments, {});
-    // let comment_count = 0;
+    let commentsCount = 0;
 
-    // comments.forEach(() => comment_count++);
+    comments.forEach(() => commentsCount++);
 
     return res.status(200).json({
       success: true,
       statusCode: 200,
       message: "All comments gotten successfully!",
+      commentsCount,
       data: comments,
-      comments_count,
     });
   } catch (err) {
     return res.status(422).json({
@@ -101,22 +87,3 @@ export const getAllComments = async (_: any, res: Response) => {
     });
   }
 };
-
-// const countComments = async (id: any) => {
-//   try {
-//     const orm = await MikroORM.init(mikroConfig);
-//     const comments = await orm.em.find(Comments, {});
-
-//     const movie = await axios.get<IData>(`https://swapi.dev/api/films/${id}`);
-
-//     comments.forEach((comment) =>
-//       movie.data.episode_id == Number(comment.movieEpisodeId)
-//         ? comments_count++
-//         : comments_count
-//     );
-
-//     // return toBeReturned;
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// };

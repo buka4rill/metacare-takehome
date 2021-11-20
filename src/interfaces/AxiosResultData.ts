@@ -1,4 +1,4 @@
-export interface IData {
+export interface IFilm {
   title: string;
   episode_id: number;
   opening_crawl: string;
@@ -11,7 +11,30 @@ export interface IData {
   species: [string];
 }
 
-export interface IDatas {
+export interface IFilms {
   count: number;
-  results: [IData];
+  results: [IFilm];
+}
+
+export interface ICharacters {
+  count: number;
+  previous: string;
+  next: string;
+  results: ICharacter[];
+}
+
+export interface ICharacter {
+  name: string;
+  height: string;
+  mass: string;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
+  homeworld: string;
+  films: [string];
+  species: [string];
+  vehicles: [string];
+  starships: [string];
 }

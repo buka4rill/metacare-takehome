@@ -3,23 +3,21 @@ import { Response } from "express";
 import { MikroORM } from "@mikro-orm/core";
 import mikroConfig from "../mikro-orm.config";
 import { Comments } from "../entities/Comments";
-import { IData, IDatas } from "src/interfaces/AxiosResultData";
+import { IFilms } from "src/interfaces/AxiosResultData";
 
 export const getAllMovies = async (_: any, res: Response) => {
   // title, opening crawls, release dates (sorted), comment counts
   try {
-    const movies = await axios.get<IDatas>("https://swapi.dev/api/films/");
+    const movies = await axios.get<IFilms>("https://swapi.dev/api/films/");
 
     const orm = await MikroORM.init(mikroConfig);
     const comments = await orm.em.find(Comments, {});
 
-    let datas = movies.data.results;
-    // datas.forEach((comment) => {
-    //   if (comment.movieEpisodeId = movies.data.results)
-    // });
-    // const filteredCommentCount = comments.filter(
-    //   (comment) => comment.movieEpisodeId === movie
-    // );
+    // Get datas and sort by release date
+    let datas = movies.data.results.sort(
+      (a, b) =>
+        new Date(a.release_date).getTime() - new Date(b.release_date).getTime()
+    );
 
     // Loop thru API results
 
@@ -43,7 +41,7 @@ export const getAllMovies = async (_: any, res: Response) => {
     return res.status(200).json({
       success: true,
       statusCode: 200,
-      message: "All moviews gotten successfully",
+      message: "All movies gotten successfully",
       data: obj,
     });
   } catch (err) {

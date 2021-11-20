@@ -15,8 +15,11 @@ export class Comments {
   @Property({ type: "text", nullable: false })
   movieEpisodeId!: string;
 
-  @Property({ nullable: false })
-  commentCount: number;
+  // @Property({ nullable: false })
+  // commentCount!: number;
+
+  @Property({ type: "text", nullable: true })
+  commenterIpAddress!: string;
 
   @Property({ type: "date" })
   createdAt = new Date();
