@@ -6,6 +6,9 @@ import { server as SERVER } from "./config";
 import dotenv from "dotenv";
 dotenv.config();
 
+import { moviesRouter } from "./routes/movies";
+import { commentsRouter } from "./routes/comments";
+
 // server setup
 const main = async () => {
   // Connect to PG DB
@@ -26,6 +29,8 @@ const main = async () => {
   });
 
   // Inject route
+  app.use(moviesRouter);
+  app.use(commentsRouter);
 
   // Declare ports & listen to port
   const port = SERVER.PORT || 4000;

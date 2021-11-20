@@ -4,6 +4,7 @@ import { MikroORM } from "@mikro-orm/core";
 import { database as db } from "./config";
 import path from "path";
 import dotenv from "dotenv";
+import { Comments } from "./entities/Comments";
 dotenv.config();
 
 export default {
@@ -19,7 +20,7 @@ export default {
         }
       : {},
   },
-  entities: [],
+  entities: [Comments],
   dbName: __prod__ ? db.DATABASE : "metacareapi",
   user: __prod__ ? db.USER : "postgres",
   password: __prod__ ? db.PASSWORD : "password",

@@ -6,10 +6,10 @@ const server = {
 };
 
 const database = {
-  DATABASE_URL: `${process.env.DATABASE_URL}`,
-  DATABASE: `${process.env.DATABASE}`,
-  USER: `${process.env.USER}`,
-  PASSWORD: `${process.env.PASSWORD}`,
+  DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE: process.env.DATABASE,
+  USER: process.env.USER,
+  PASSWORD: process.env.PASSWORD,
 };
 
 export { server, database };
