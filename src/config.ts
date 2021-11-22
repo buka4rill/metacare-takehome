@@ -7,9 +7,9 @@ const server = {
 
 const database = {
   DATABASE_URL: process.env.DATABASE_URL,
-  DATABASE: process.env.DATABASE,
-  USER: process.env.USER,
-  PASSWORD: process.env.PASSWORD,
+  DATABASE: process.env.POSTGRES_DB,
+  USER: process.env.POSTGRES_USER,
+  PASSWORD: process.env.POSTGRES_PASSWORD,
 };
 
 export { server, database };

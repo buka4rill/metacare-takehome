@@ -25,6 +25,7 @@ export default {
   user: __prod__ ? db.USER : "postgres",
   password: __prod__ ? db.PASSWORD : "password",
   clientUrl: db.DATABASE_URL,
+  // host: "metacareapidb",
   type: "postgresql",
   debug: !__prod__, // Debug on, when not in prod
 } as Parameters<typeof MikroORM.init>[0];
