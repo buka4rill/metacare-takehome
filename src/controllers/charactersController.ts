@@ -194,7 +194,7 @@ export const getCharacters = async (req: Request, res: Response) => {
       datas,
     });
   } catch (err) {
-    return res.status(422).json({
+    return res.status(500).json({
       success: false,
       message: "Error getting characters!",
       error: err.message,

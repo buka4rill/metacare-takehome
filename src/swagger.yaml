@@ -1,0 +1,58 @@
+openapi: 3.0.2
+info:
+  title: Metacare TakeHome API Docs
+  description: Starwars API built with NodeJS/Typescript, Express & PSQL
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:4000/
+    description: Heroku server link
+
+schemes:
+  - http
+
+paths:
+  /:
+  get:
+    summary: Home route for api
+
+  /api/movies:
+  get:
+    summary: Get all movies listings, from oldest to latest.
+    responses:
+      "200":
+        description: Movies object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                statusCode:
+                  type: integer
+                  example: 200
+                message:
+                  type: string
+                  example: All messages gotten successfully
+                datas:
+                  schema:
+                  type: array
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      example: 4
+                    movieName:
+                      type: string
+                      example: A New Hope
+                    openingCrawl:
+                      type: string
+                      example: It is a period of war
+                    releaseDate:
+                      type: string
+                      example: 1977-05-25
+                    commentCount:
+                      type: integer
+                      example: 2

@@ -45,7 +45,7 @@ export const getAllMovies = async (_: any, res: Response) => {
       data: obj,
     });
   } catch (err) {
-    return res.status(422).json({
+    return res.status(500).json({
       success: false,
       message: "Error getting movies!",
       error: err.message,

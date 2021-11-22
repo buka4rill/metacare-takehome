@@ -1,0 +1,574 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Metacare TakeHome API Docs",
+    "version": "1.0",
+    "description": "Starwars API built with NodeJS/Typescript, Express & PSQL",
+    "contact": {
+      "name": "Ebuka Abraham",
+      "email": "buka4rill@gmail.com"
+    }
+  },
+  "schemes": ["http"],
+  "host": "http://localhost:4000/",
+  "basePath": "/",
+  "tags": [
+    { "name": "Home", "description": "API Home" },
+    { "name": "Movies", "description": "Get all movies listings, from oldest to latest" },
+    {
+      "name": "Comments",
+      "description": "Operations for comment requests"
+    },
+    { "name": "Characters", "description": "Operations on characters endpoint" }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Home route for api",
+        "description": "Home route for api",
+        "produces": ["text/plain"],
+        "consumes": [],
+        "parameters": [],
+        "tags": ["Home"]
+      }
+    },
+    "/api/movies": {
+      "get": {
+        "summary": "Get all movies listings",
+        "description": "Get all movies listings, from oldest to latest",
+        "produces": ["application/json"],
+        "consumes": [],
+        "tags": ["Movies"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": "200"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All movies gotten successfully!"
+                    },
+                    "datas": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "example": "1"
+                          },
+                          "movieName": {
+                            "type": "string",
+                            "example": "A New Hope"
+                          },
+                          "openingCrawl": {
+                            "type": "string",
+                            "example": "It is a period of war"
+                          },
+                          "releaseDate": {
+                            "type": "string",
+                            "example": "1977-05-25"
+                          },
+                          "commentCount": {
+                            "type": "integer",
+                            "example": "2"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error getting movies!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comment/{movieId}": {
+      "post": {
+        "summary": "Create a comment",
+        "description": "Create comment, saves to databse. Pass movie id as paramenter",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": "true",
+            "description": "Movie you want to comment to",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": "1"
+            }
+
+          }
+        ],
+        "tags": ["Comments"],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": "201"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Comment created successfully!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int32",
+                          "example": "1"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "example": "First comment for this movie!"
+                        },
+                        "movieId": {
+                          "type": "string",
+                          "example": "1"
+                        },
+                        "movieEpisodeId": {
+                          "type": "string",
+                          "example": "4"
+                        },
+                        "commenterIpAddress": {
+                          "type": "string",
+                          "example": "::1"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error(s) found in request!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "example": "404"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Movie not found!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error creating comment!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }]
+      }
+    },
+    "/api/comment/all": {
+      "get": {
+        "summary": "Get all comments",
+        "description": "Get all comments in the database. Comments returned in reverse chronological order",
+        "produces": ["application/json"],
+        "consumes": [],
+        "tags": ["Comments"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": "200"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All comments gotten successfully!"
+                    },
+                    "datas": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "example": "1"
+                          },
+                          "comment": {
+                            "type": "string",
+                            "example": "First comment for this movie!"
+                          },
+                          "movieId": {
+                            "type": "string",
+                            "example": "1"
+                          },
+                          "movieEpisodeId": {
+                            "type": "string",
+                            "example": "4"
+                          },
+                          "commenterIpAddress": {
+                            "type": "string",
+                            "example": "::1"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error getting comments!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }]
+      }
+    },
+    "/api/characters": {
+      "get": {
+        "summary": "Get movie characters",
+        "description": "Get all characters, sort by ascending/descending order, gender, name or height",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "tags": ["Characters"],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort by 'asc' or 'desc' order",
+            "schema": {
+              "type": "string",
+              "example": "asc"
+            }
+          },
+          {
+            "in": "query",
+            "name": "gender",
+            "description": "Sort by gender, 'm' or 'f'",
+            "schema": {
+              "type": "string",
+            }
+          }
+          {
+            "in": "query",
+            "name": "name",
+            "description": "Sort by name. Ex: Luke",
+            "schema": {
+              "type": "string",
+            }
+          }
+          {
+            "in": "query",
+            "name": "height",
+            "description": "Sort by height",
+            "schema": {
+              "type": "string",
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": "200"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All characters gotten successfully!"
+                    },
+                    "datas": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                        
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Sorting operation successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": "200"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All characters gotten successfully!"
+                    },
+                    "characterCount": {
+                      "type": "integer",
+                      "example": "1"
+                    },
+                    "totalHeight": {
+                      "type": "string",
+                      "example": "130 cm"
+                    },
+                    "totalHeightInFeets": {
+                      "type": "string",
+                      "example": "6 ft"
+                    },
+
+                    "datas": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong search query! Character not found!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object", 
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error getting characters!"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }]
+      }
+    },
+  },
+  "components": {
+    "schemas": {
+      "Comments": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+          },      
+          "comment": {
+            "type": "string",
+          },
+          "movieId": {
+            "type": "string"
+          },
+          "movieEpisodeId": {
+            "type": "string"
+          },
+          "commenterIpAddress": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "datetime"
+          }
+          "updatedAt": {
+            "type": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

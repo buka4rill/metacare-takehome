@@ -11,7 +11,7 @@ import {
 // Create a comment
 router.post(
   "/api/comment/:movieId",
-  [check("comment", "Comment can not be empty").not().isEmpty()],
+  [check("comment", "Comment can not be empty").isLength({ max: 500 })], // max of 500 char
   createComment
 );
 

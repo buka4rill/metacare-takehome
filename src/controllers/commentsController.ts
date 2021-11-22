@@ -15,7 +15,7 @@ export const createComment = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({
       status: false,
-      statusCodea: 400,
+      statusCode: 400,
       message: "Error(s) found in request!",
       errors: errors.array(),
     });
@@ -29,14 +29,15 @@ export const createComment = async (req: Request, res: Response) => {
     const movie = await axios.get<IFilm>(
       `https://swapi.dev/api/films/${movieId}`
     );
-    // const comments = await orm.em.find(Comments, {});
 
-    // const filteredComments = comments.filter(
-    //   (comment) => Number(comment.movieEpisodeId) == movie.data.episode_id
-    // );
-
-    // let commentCount = 0;
-    // comments.forEach(() => commentCount++);
+    // check
+    if (!movie) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Movie not found!"
+      })
+    }
 
     // Create comment
     const newComment = orm.em.create(Comments, {
@@ -52,11 +53,12 @@ export const createComment = async (req: Request, res: Response) => {
     return res.status(201).json({
       success: true,
       statusCode: 201,
+      message: "Comment created successfully!",
       data: newComment,
     });
   } catch (err) {
     console.error(err.message);
-    return res.status(422).json({
+    return res.status(500).json({
       success: false,
       message: "Error creating comment!",
       error: err.message,
@@ -67,7 +69,13 @@ export const createComment = async (req: Request, res: Response) => {
 export const getAllComments = async (_: any, res: Response) => {
   try {
     const orm = await MikroORM.init(mikroConfig);
-    const comments = await orm.em.find(Comments, {});
+
+    // comments returned in reverse chronological order
+    const comments = await orm.em.find(
+      Comments,
+      {},
+      { orderBy: { createdAt: "DESC" } }
+    );
     let commentsCount = 0;
 
     comments.forEach(() => commentsCount++);
@@ -77,10 +85,10 @@ export const getAllComments = async (_: any, res: Response) => {
       statusCode: 200,
       message: "All comments gotten successfully!",
       commentsCount,
-      data: comments,
+      datas: comments,
     });
   } catch (err) {
-    return res.status(422).json({
+    return res.status(500).json({
       success: false,
       message: "Error getting comments!",
       error: err.message,

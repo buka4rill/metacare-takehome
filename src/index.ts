@@ -3,12 +3,20 @@ import express, { Response } from "express";
 import { MikroORM } from "@mikro-orm/core";
 import mikroConfig from "./mikro-orm.config";
 import { server as SERVER } from "./config";
+// import YAML from "yamljs";
 import dotenv from "dotenv";
 dotenv.config();
 
 import { moviesRouter } from "./routes/movies";
 import { commentsRouter } from "./routes/comments";
 import { charactersRouter } from "./routes/characters";
+
+//  Swagger UI
+import swaggerUI from "swagger-ui-express";
+// const swaggerDocument = YAML.load("./src/swagger.yaml");
+// import { swaggerDoc } from "./swagger.json";
+
+import swaggerDoc from "./swagger.json";
 
 // server setup
 const main = async () => {
@@ -33,6 +41,10 @@ const main = async () => {
   app.use(moviesRouter);
   app.use(commentsRouter);
   app.use(charactersRouter);
+
+  // Docs
+  // app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+  app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
   // Declare ports & listen to port
   const port = SERVER.PORT || 4000;
