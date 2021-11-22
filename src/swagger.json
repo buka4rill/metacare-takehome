@@ -10,7 +10,7 @@
     }
   },
   "schemes": ["http"],
-  "host": "http://localhost:4000/",
+  "host": "https://bukamcare.herokuapp.com/",
   "basePath": "/",
   "tags": [
     { "name": "Home", "description": "API Home" },
